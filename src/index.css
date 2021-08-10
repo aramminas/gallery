@@ -46,3 +46,7 @@ button.save-image {
     left: 50%;
     z-index: 99999;
 }
+
+.image-content img {
+    max-width: 1200px;
+}

@@ -1,17 +1,23 @@
 import React , { useState, useEffect } from "react";
 import {Button, Container, Paper} from '@material-ui/core';
 import {useParams, Link} from 'react-router-dom';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {getImageById} from "../store/actions/imagesAction";
 
 const Image = () => {
     const { id } = useParams();
+    const dispatch = useDispatch();
     const [image, setImage] = useState('');
     const images = useSelector(state => state.images);
 
     useEffect(() => {
         const data = images.filter(item => item.id === id)[0];
-        setImage(data.url);
-    }, []);
+        if(data){
+            setImage(data.url);
+        }else {
+            dispatch(getImageById(id));
+        }
+    }, [images]);
 
     return (
         <Container fixed>

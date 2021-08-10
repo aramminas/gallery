@@ -1,5 +1,5 @@
 import {TOGGLE_LOADER} from "../constants";
 
-export const toggle_loader = data => {
+export const toggleLoader = data => {
     return {type: TOGGLE_LOADER, payload : data};
 }

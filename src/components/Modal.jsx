@@ -3,8 +3,9 @@ import {useSelector, useDispatch} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide} from '@material-ui/core';
 
 /* actions */
-import {toggle_modal} from "../store/actions/modalAction";
-import {remove_image} from "../store/actions/imagesAction";
+import {toggleModal} from "../store/actions/modalAction";
+import {removeImage} from "../store/actions/imagesAction";
+import {changeTotal} from "../store/actions/paginationAction";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -13,14 +14,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function Modal() {
     const dispatch = useDispatch();
     const modal = useSelector(state => state.modal);
+    const {total} = useSelector(state => state.pagination);
 
     const handleClose = () => {
-        dispatch(toggle_modal(''));
+        dispatch(toggleModal(''));
     };
 
     const handleDelete = () => {
-        dispatch(remove_image(modal.id));
-        dispatch(toggle_modal(''));
+        dispatch(removeImage(modal.id));
+        dispatch(toggleModal(''));
+        dispatch(changeTotal(total-1));
     };
 
     return (

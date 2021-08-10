@@ -1,12 +1,13 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {useDispatch} from "react-redux";
+import {useSelector, useDispatch} from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
 Button } from '@material-ui/core';
 
 /* actions */
-import {toggle_modal} from "../store/actions/modalAction";
+import {toggleModal} from "../store/actions/modalAction";
+import {changeLimit, changeOffset} from "../store/actions/paginationAction";
 
 const useStyles = makeStyles({
     root: {
@@ -17,23 +18,28 @@ const useStyles = makeStyles({
     },
 });
 
-export default function ImagesTable(props) {
+export default function ImagesTable() {
     const classes = useStyles();
     const dispatch = useDispatch();
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const rows = props.images;
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const {total, limit} = useSelector(state => state.pagination);
+    const rows = useSelector(state => state.images);
+
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        dispatch(changeOffset(newPage*limit));
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
+        const val = +event.target.value;
+        setRowsPerPage(val);
         setPage(0);
+        dispatch(changeLimit(val));
     };
 
     const openModal = (id) => {
-        dispatch(toggle_modal(id));
+        dispatch(toggleModal(id));
     }
 
     return (
@@ -48,7 +54,7 @@ export default function ImagesTable(props) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        {rows.map((row) => {
                             return (
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
                                     <TableCell component="th" scope="row">
@@ -70,14 +76,15 @@ export default function ImagesTable(props) {
                     </TableBody>
                 </Table>
             </TableContainer>
+
             <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
                 component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
+                count={total}
                 page={page}
                 onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+                rowsPerPageOptions={[5, 10]}
             />
         </Paper>
     );

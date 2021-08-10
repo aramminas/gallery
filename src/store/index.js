@@ -5,11 +5,13 @@ import thunk from 'redux-thunk';
 import imagesReducer from "../store/reducers/imagesReducer";
 import modalReducer from "../store/reducers/modalReducer";
 import loaderReducer from "./reducers/loaderReducer";
+import paginationReducer from "./reducers/paginationReducer";
 
 const AllReducers = combineReducers({
     images: imagesReducer,
     modal: modalReducer,
     loader: loaderReducer,
+    pagination: paginationReducer,
 });
 
 const InitialState = {};
