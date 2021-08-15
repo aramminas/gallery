@@ -4,6 +4,7 @@ import Loader from "react-loader-spinner";
 /* components */
 import Home from "./components/Home";
 import Image from "./components/Image";
+import Logs from  "./components/Logs";
 import NotFound from "./components/NotFound";
 
 export default function App() {
@@ -13,10 +14,10 @@ export default function App() {
                 <Route exact={true} path="/">
                     <Home />
                 </Route>
-                <Route path="/search">
-                    <Image/>
+                <Route path="/logs/:id">
+                    <Logs/>
                 </Route>
-                <Route path="/log/:id">
+                <Route path="/image/:id">
                     <Image/>
                 </Route>
                 <Route path="*">

@@ -4,6 +4,7 @@ import {useSelector, useDispatch} from "react-redux";
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
 Button } from '@material-ui/core';
+import {Visibility} from '@material-ui/icons';
 
 /* actions */
 import {toggleModal} from "../store/actions/modalAction";
@@ -49,6 +50,7 @@ export default function ImagesTable() {
                     <TableHead>
                         <TableRow>
                             <TableCell>Id</TableCell>
+                            <TableCell align="center">Logs</TableCell>
                             <TableCell align="center">Image</TableCell>
                             <TableCell align="right">Option</TableCell>
                         </TableRow>
@@ -61,7 +63,12 @@ export default function ImagesTable() {
                                         {row.id}
                                     </TableCell>
                                     <TableCell align="center">
-                                        <Link to={`/log/${row.id}`}>
+                                        <Link to={`/logs/${row.id}`}>
+                                            <Visibility/>
+                                        </Link>
+                                    </TableCell>
+                                    <TableCell align="center">
+                                        <Link to={`/image/${row.id}`}>
                                             <img src={row.url} alt={row.url} className="table-icons"/>
                                         </Link>
                                     </TableCell>

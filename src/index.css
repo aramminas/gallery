@@ -48,5 +48,53 @@ button.save-image {
 }
 
 .image-content img {
-    max-width: 1200px;
+    max-width: 100%;
+}
+
+.image-buttons {
+    margin: 10px;
+}
+
+.image-action-block {
+    height: calc(100% - 20px);
+    padding: 10px;
+}
+
+div.image-history-block {
+    background-color: #f5f5f5;
+    padding: 20px;
+}
+
+.image-history-block ul {
+    margin: 0 auto;
+}
+
+.image-blur-block {
+    height: 100%;
+}
+
+.blur-demo {
+    width: 100%;
+    max-width: 560px;
+    height: 420px;
+    max-height: 100%;
+    margin: 1rem auto;
+}
+.blur-input {
+    width: 80%;
+    max-width: 480px;
+    margin: 0;
+    height: 3em;
+}
+
+.log-image-content img {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
+}
+
+.logs-title {
+    display: flex;
+    justify-content: space-between;
 }
