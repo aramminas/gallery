@@ -98,3 +98,45 @@ div.image-history-block {
     display: flex;
     justify-content: space-between;
 }
+
+.infinity-loader-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.infinity-loader-content > div {
+    height: 25px;
+    margin-left: 10px;
+}
+
+.infinity-loader-content span {
+    font-size: 19px;
+    font-weight: 600;
+}
+
+.no-data {
+    margin-top: 12px;
+}
+
+.resize-image-content {
+    margin-top: 15px;
+}
+
+.default-file-parameters {
+    margin-bottom: 20px;
+}
+
+.info-title span {
+    font-weight: 600;
+}
+
+.info-title p {
+    text-transform: capitalize;
+    font-weight: 600;
+    color: #2962ff;
+}
+
+.load-more-logs {
+    margin: 10px 0;
+}

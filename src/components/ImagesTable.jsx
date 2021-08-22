@@ -58,7 +58,7 @@ export default function ImagesTable() {
                     <TableBody>
                         {rows.map((row) => {
                             return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.id} aria-checked="false">
                                     <TableCell component="th" scope="row">
                                         {row.id}
                                     </TableCell>

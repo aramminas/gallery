@@ -1,0 +1,1 @@
+export const errorMessage = (data, addToast) => data.error && addToast(data.error , { appearance: 'error' });

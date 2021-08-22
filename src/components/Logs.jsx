@@ -1,28 +1,14 @@
-import React, {Fragment, useEffect, useState} from "react";
-import {useParams, Link} from 'react-router-dom';
+import React, {Fragment, useState} from "react";
+import {Link} from 'react-router-dom';
 import {Button, Container, Paper, Typography} from "@material-ui/core";
-import api from "../api/api";
 
 /* components */
 import LogsTable from "./LogsTable";
 import Card from "./Card";
 
 const Logs = () => {
-    const { id } = useParams();
-    const [logs, setLogs] = useState([]);
+    const [empty, setEmpty] = useState(false);
     const [image, setImage] = useState({});
-
-    useEffect( async _ => {
-        if(Object.keys(image).length === 0){
-            const result = await api.getImageLogsById(id);
-            if(result.status){
-                setLogs(result.logs);
-            }
-            if(result.image){
-                setImage(result.image);
-            }
-        }
-    }, []);
 
     return (
         <Fragment>
@@ -43,9 +29,9 @@ const Logs = () => {
                         : null
                     }
                     <hr/>
-                    {logs.length > 0
+                    { !empty
                         ?
-                        <LogsTable logs={logs} />
+                        <LogsTable setImage={setImage} setEmpty={setEmpty}/>
                         :
                         <Typography variant="h6" gutterBottom component="div">
                             List of logs is empty.

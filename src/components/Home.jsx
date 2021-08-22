@@ -1,6 +1,8 @@
 import React, {useState, useEffect, Fragment} from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {TextField, Container, Paper, Button} from '@material-ui/core';
+import { useToasts } from "react-toast-notifications";
+import {errorMessage} from "../helpers/helpers";
 
 /* components */
 import LoaderBlock from "./LoaderBlock";
@@ -10,17 +12,17 @@ import Modal from "./Modal";
 /* actions */
 import {addImage, getAllImages} from "../store/actions/imagesAction";
 import {toggleLoader} from "../store/actions/loaderAction";
-import {changeTotal} from "../store/actions/paginationAction";
 
 const Home = () => {
+    const { addToast } = useToasts();
     const dispatch = useDispatch();
     const [url, setUrl] = useState('');
     const images = useSelector(state => state.images);
     const loader = useSelector(state => state.loader);
-    const {total, limit, offset} = useSelector(state => state.pagination);
+    const {limit, offset} = useSelector(state => state.pagination);
 
     useEffect(() => {
-        dispatch(getAllImages(limit, offset));
+        dispatch(getAllImages(limit, offset)).then(data => errorMessage(data, addToast));
     }, [offset, limit]);
 
     const handleChange = (e) => {
@@ -28,10 +30,9 @@ const Home = () => {
     }
 
     const saveUrl = () => {
-        dispatch(addImage(url));
+        dispatch(addImage(url)).then(data => errorMessage(data, addToast));
         dispatch(toggleLoader(''));
         setUrl("");
-        dispatch(changeTotal(total+1));
     }
 
     return (
@@ -46,7 +47,6 @@ const Home = () => {
                         </Button>
                     </form>
                 </Paper>
-
                 {
                    images.length > 0 ?
                         <Paper elevation={3} className="home-content">

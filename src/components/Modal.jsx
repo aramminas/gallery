@@ -1,29 +1,29 @@
 import React from 'react';
 import {useSelector, useDispatch} from "react-redux";
 import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slide} from '@material-ui/core';
+import { useToasts } from 'react-toast-notifications';
+import {errorMessage} from "../helpers/helpers";
 
 /* actions */
 import {toggleModal} from "../store/actions/modalAction";
 import {removeImage} from "../store/actions/imagesAction";
-import {changeTotal} from "../store/actions/paginationAction";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function Modal() {
+    const { addToast } = useToasts();
     const dispatch = useDispatch();
     const modal = useSelector(state => state.modal);
-    const {total} = useSelector(state => state.pagination);
 
     const handleClose = () => {
         dispatch(toggleModal(''));
     };
 
     const handleDelete = () => {
-        dispatch(removeImage(modal.id));
+        dispatch(removeImage(modal.id)).then(data => errorMessage(data, addToast));
         dispatch(toggleModal(''));
-        dispatch(changeTotal(total-1));
     };
 
     return (

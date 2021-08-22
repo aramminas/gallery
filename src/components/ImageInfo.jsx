@@ -4,6 +4,8 @@ import {Crop, PhotoSizeSelectLarge, TabUnselected, BlurOn, Flip} from '@material
 import {blue} from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 
+import {defaultType, blurType} from "../helpers/constants";
+
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
@@ -14,8 +16,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: blue['A700'],
     }
 }));
-
-const defaultType = 'crop';
 
 const ImageInfo = ({imageInfo}) => {
     const classes = useStyles();
@@ -36,7 +36,7 @@ const ImageInfo = ({imageInfo}) => {
                                         <Crop />
                                     </Avatar>
                                 </ListItemAvatar>
-                                <ListItemText primary="Type" secondary={imageInfo.type} />
+                                <ListItemText primary="Type" className="info-title" secondary={imageInfo.type} />
                             </ListItem>
                             <Divider variant="inset" component="li" />
                             <ListItem>
@@ -76,24 +76,56 @@ const ImageInfo = ({imageInfo}) => {
                             </ListItem>
                         </Fragment>
                         :
-                        <Fragment>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar className={classes.bg}>
-                                        <BlurOn />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Type" secondary={imageInfo.type} />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemAvatar>
-                                    <Avatar>
-                                        <Flip />
-                                    </Avatar>
-                                </ListItemAvatar>
-                                <ListItemText primary="Percentage" secondary={`${imageInfo.percentage}%`} />
-                            </ListItem>
-                        </Fragment>
+                        imageInfo.type === blurType
+                            ?
+                            <Fragment>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar className={classes.bg}>
+                                            <BlurOn />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Type" className="info-title" secondary={imageInfo.type} />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <Flip />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Percentage" secondary={`${imageInfo.percentage}%`} />
+                                </ListItem>
+                            </Fragment>
+                            :
+                            <Fragment>
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar className={classes.bg}>
+                                            <BlurOn />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Type" className="info-title" secondary={imageInfo.type} />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <PhotoSizeSelectLarge />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Width" secondary={`${Math.floor(imageInfo.width)} px`} />
+                                </ListItem>
+                                <Divider variant="inset" component="li" />
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <PhotoSizeSelectLarge />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary="Height" secondary={`${Math.floor(imageInfo.height)} px`} />
+                                </ListItem>
+                            </Fragment>
                     }
                 </List>
             </Paper>

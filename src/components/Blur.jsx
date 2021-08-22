@@ -2,10 +2,12 @@ import React, {useState, useEffect} from "react";
 import BlurReact from "react-blur";
 import {v4 as uuidv4} from "uuid";
 import { useToasts } from 'react-toast-notifications';
-import {Button} from "@material-ui/core";
 import api from "../api/api";
 
-const type = 'blur';
+import {blurType, successMsg, errorMsg} from "../helpers/constants";
+
+/* components */
+import SaveButton from "./general/SaveButton";
 
 const Blur = ({id, image, imageInfo}) => {
     const { addToast } = useToasts();
@@ -25,15 +27,16 @@ const Blur = ({id, image, imageInfo}) => {
         const data = {
             id: uuidv4(),
             imageId: id,
-            type,
+            type: blurType,
             percentage: percent,
         };
 
         const response = await api.saveImageInfo(data);
         if(response.status){
-            addToast('Saved Successfully', { appearance: 'success' });
+            addToast(successMsg, { appearance: 'success' });
         }else {
-            addToast( 'Error while saving data!', { appearance: 'error' });
+            let error = response.error ? response.error : errorMsg;
+            addToast( error, { appearance: 'error' });
         }
     }
 
@@ -44,9 +47,7 @@ const Blur = ({id, image, imageInfo}) => {
             </BlurReact>
             <input className='blur-input' type='range' value={percent} onChange={onChangePercent} min={0} max={100} />
             <hr/>
-            <Button variant="contained" color="primary" onClick={saveBlurData}>
-                Save
-            </Button>
+            <SaveButton saveData={saveBlurData}/>
         </div>
     );
 

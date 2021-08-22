@@ -1,12 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import {Button} from "@material-ui/core";
 import { useToasts } from 'react-toast-notifications';
 import { v4 as uuidv4 } from 'uuid';
 import api from "../api/api";
 
-const type = 'crop';
+import {cropType, successMsg, errorMsg} from "../helpers/constants";
+
+/* components */
+import SaveButton from "./general/SaveButton";
 
 const Crop = ({id, image, imageInfo}) => {
     const { addToast } = useToasts();
@@ -41,7 +43,7 @@ const Crop = ({id, image, imageInfo}) => {
         const data = {
             id: uuidv4(),
             imageId: id,
-            type,
+            type: cropType,
             height,
             width,
             x,
@@ -50,9 +52,10 @@ const Crop = ({id, image, imageInfo}) => {
 
         const response = await api.saveImageInfo(data);
         if(response.status){
-            addToast('Saved Successfully', { appearance: 'success' });
+            addToast(successMsg, { appearance: 'success' });
         }else {
-            addToast( 'Error while saving data!', { appearance: 'error' });
+            let error = response.error ? response.error : errorMsg;
+            addToast( error, { appearance: 'error' });
         }
     }
 
@@ -136,7 +139,7 @@ const Crop = ({id, image, imageInfo}) => {
     }
 
     return (
-        <div className="App">
+        <div>
             {/*<div>*/}
             {/*    <input type="file" accept="image/*" onChange={onSelectFile} />*/}
             {/*</div>*/}
@@ -154,9 +157,7 @@ const Crop = ({id, image, imageInfo}) => {
                 <img alt="Crop" style={{ maxWidth: '100%' }} src={croppedImageUrl} />
             )}
             <hr/>
-            <Button variant="contained" color="primary" onClick={saveCropData}>
-                Save
-            </Button>
+            <SaveButton saveData={saveCropData}/>
         </div>
     );
 }

@@ -11,5 +11,6 @@ export const TOGGLE_LOADER = 'TOGGLE_LOADER';
 
 /* Pagination */
 export const CHANGE_TOTAL = 'CHANGE_TOTAL';
+export const SET_TOTAL = 'SET_TOTAL';
 export const CHANGE_LIMIT = 'CHANGE_LIMIT';
 export const CHANGE_OFFSET = 'CHANGE_OFFSET';
