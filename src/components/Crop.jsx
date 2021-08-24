@@ -1,41 +1,51 @@
 import React, {useState, useEffect} from 'react';
 import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
+import {useDispatch} from "react-redux";
 import { useToasts } from 'react-toast-notifications';
 import { v4 as uuidv4 } from 'uuid';
 import api from "../api/api";
 
+import 'react-image-crop/dist/ReactCrop.css';
 import {cropType, successMsg, errorMsg} from "../helpers/constants";
+
+/* actions */
+import {setCurrentParameters} from "../store/actions/ongoingParametersAction";
 
 /* components */
 import SaveButton from "./general/SaveButton";
 
-const Crop = ({id, image, imageInfo}) => {
-    const { addToast } = useToasts();
+const Crop = ({id, image, imageInfo, parameters, toggleInfo}) => {
+    const {addToast} = useToasts();
+    const dispatch = useDispatch();
     const [src, setSrc] = useState(null);
     const [imageRef, setImageRef] = useState(null);
     const [croppedImageUrl, setCroppedImageUrl] = useState(null);
     const [crop, setCrop] = useState({
         unit: 'px', // '%'
-        width: 30,
+        // width: 30,
         aspect: 3 / 2, //  16 / 9
     });
 
     useEffect(async _ => {
-        if(image !== ""){
-            const data = await fetch(image);
-            const blob = await data.blob();
-            let metadata = {
-                type: 'image/jpeg'
-            };
-            let file = new File([blob], `${id}.jpg`, metadata);
-            onSelectFileBlob(file);
-        }
+        const {crop: cropParams} = parameters;
+        if(Object.keys(cropParams).length === 0 || (crop.width === 0 && crop.height === 0)){
+            if(image !== ""){
+                const data = await fetch(image);
+                const blob = await data.blob();
+                let metadata = {
+                    type: 'image/jpeg'
+                };
+                let file = new File([blob], `${id}.jpg`, metadata);
+                onSelectFileBlob(file);
+            }
 
-        if(imageInfo){
-            setCrop({...crop, ...imageInfo});
+            if(imageInfo){
+                setCrop({...crop, ...imageInfo});
+            }
+        } else {
+            setCrop(cropParams);
+            setSrc(cropParams.url);
         }
-
     },[image, imageInfo]);
 
     const saveCropData = async () => {
@@ -52,6 +62,7 @@ const Crop = ({id, image, imageInfo}) => {
 
         const response = await api.saveImageInfo(data);
         if(response.status){
+            toggleInfo();
             addToast(successMsg, { appearance: 'success' });
         }else {
             let error = response.error ? response.error : errorMsg;
@@ -61,9 +72,10 @@ const Crop = ({id, image, imageInfo}) => {
 
     const onSelectFileBlob = files => {
             const reader = new FileReader();
-            reader.addEventListener('load', () =>
+            reader.addEventListener('load', () => {
+                dispatch(setCurrentParameters({...parameters.crop, type: cropType, url: reader.result}));
                 setSrc(reader.result)
-            );
+            });
             reader.readAsDataURL(files);
     };
 
@@ -83,6 +95,7 @@ const Crop = ({id, image, imageInfo}) => {
     };
 
     const onCropComplete = crop => {
+        dispatch(setCurrentParameters({...parameters.crop, type: cropType, ...crop}));
         makeClientCrop(crop);
     };
 

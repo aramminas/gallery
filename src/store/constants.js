@@ -14,3 +14,7 @@ export const CHANGE_TOTAL = 'CHANGE_TOTAL';
 export const SET_TOTAL = 'SET_TOTAL';
 export const CHANGE_LIMIT = 'CHANGE_LIMIT';
 export const CHANGE_OFFSET = 'CHANGE_OFFSET';
+
+/* Ongoing Parameters */
+export const SET_CURRENT_PARAMETERS = 'SET_CURRENT_PARAMETERS';
+export const RESET_ALL_PARAMETERS = 'RESET_ALL_PARAMETERS';

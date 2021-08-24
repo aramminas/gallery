@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import {useDispatch} from "react-redux";
 import Resizer from "react-image-file-resizer";
 import {makeStyles} from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -8,6 +9,9 @@ import {v4 as uuidv4} from "uuid";
 
 /* components */
 import SaveButton from "./general/SaveButton";
+
+/* actions */
+import {setCurrentParameters} from "../store/actions/ongoingParametersAction";
 
 /* other */
 import {resizeType, errorMsg, successMsg, defaultImage} from "../helpers/constants";
@@ -26,9 +30,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Resize = ({id, image, imageInfo}) => {
+const Resize = ({id, image, imageInfo, parameters, toggleInfo}) => {
     const classes = useStyles();
     const {addToast} = useToasts();
+    const dispatch = useDispatch();
     const [newImage, setNewImage] = useState(defaultImage);
     const [fileData, setFileData] = useState(null);
     const [defaultSizes, setDefaultSizes] = useState({});
@@ -36,6 +41,8 @@ const Resize = ({id, image, imageInfo}) => {
     const [height, setHeight] = useState(300);
 
     useEffect(async _ => {
+        const {resize: resizeParams} = parameters;
+
         if (image !== "" && newImage === defaultImage) {
             const data = await fetch(image);
             const blob = await data.blob();
@@ -48,7 +55,14 @@ const Resize = ({id, image, imageInfo}) => {
             setFileData(file);
         }
 
-        if (imageInfo) {
+        if(Object.keys(resizeParams).length > 2){
+            const {url, width: widthParam, height: heightParam} = resizeParams;
+            setNewImage(url);
+
+            widthParam ? setWidth(widthParam) : imageInfo ? setWidth(imageInfo.width) : setWidth(width);
+            heightParam ? setHeight(heightParam) : imageInfo ? setHeight(imageInfo.height) : setHeight(height);
+
+        } else if (imageInfo){
             setWidth(imageInfo.width);
             setHeight(imageInfo.height);
         }
@@ -93,6 +107,7 @@ const Resize = ({id, image, imageInfo}) => {
 
         const response = await api.saveImageInfo(data);
         if(response.status){
+            toggleInfo();
             addToast(successMsg, { appearance: 'success' });
         }else {
             let error = response.error ? response.error : errorMsg;
@@ -106,7 +121,7 @@ const Resize = ({id, image, imageInfo}) => {
             addToast( 'You have specified a parameter greater than the default!', { appearance: 'warning' });
             return false;
         }
-
+        dispatch(setCurrentParameters({...parameters.resize, type: resizeType, [name]: +value}));
         name === 'width' ? setWidth(+value) : setHeight(+value);
     }
 
@@ -120,8 +135,9 @@ const Resize = ({id, image, imageInfo}) => {
                     "JPEG",
                     100,
                     0,
-                    (uri) => {
-                        setNewImage(uri);
+                    (url) => {
+                        dispatch(setCurrentParameters({...parameters.resize, type: resizeType, url}));
+                        setNewImage(url);
                     },
                     "base64",
                     200,

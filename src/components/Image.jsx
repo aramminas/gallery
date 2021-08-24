@@ -6,6 +6,7 @@ import { useToasts } from "react-toast-notifications";
 
 /* actions */
 import {getImageById} from "../store/actions/imagesAction";
+import {resetAllParameters} from "../store/actions/ongoingParametersAction";
 
 /* components */
 import Crop from "./Crop";
@@ -25,7 +26,15 @@ const Image = () => {
     const [image, setImage] = useState(defaultImage);
     const [type, setType] = useState(defaultType);
     const [imageInfo, setImageInfo] = useState(null);
+    const [refreshInfo, setRefreshInfo] = useState(false);
     const images = useSelector(state => state.images);
+    const parameters = useSelector(state => state.parameters);
+
+    useEffect( () => {
+        return function () {
+            dispatch(resetAllParameters());
+        }
+    }, []);
 
     useEffect(async () => {
         const data = images.filter(item => item.id === id)[0];
@@ -40,7 +49,11 @@ const Image = () => {
         }else if(response.error){
             addToast( response.error, { appearance: 'error' });
         }
-    }, [images, type]);
+    }, [images, type, refreshInfo]);
+
+    const toggleInfo = () => {
+        setRefreshInfo(!refreshInfo);
+    }
 
     const changeType = (data) => {
         setType(data);
@@ -61,22 +74,19 @@ const Image = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <div className="image-buttons">
-                            <ButtonGroup color="primary" aria-label="outlined primary button group">
-                                <Button onClick={() => changeType(cropType)}>Crop</Button>
-                                <Button onClick={() => changeType(blurType)}>Blur</Button>
-                                <Button onClick={() => changeType(resizeType)}>Resize</Button>
+                            <ButtonGroup aria-label="outlined primary button group">
+                                <Button color={(type === cropType) ? 'primary' : null} onClick={() => changeType(cropType)}>Crop</Button>
+                                <Button color={(type === blurType) ? 'primary' : null} onClick={() => changeType(blurType)}>Blur</Button>
+                                <Button color={(type === resizeType) ? 'primary' : null} onClick={() => changeType(resizeType)}>Resize</Button>
                             </ButtonGroup>
                         </div>
                     </Grid>
-                    <Grid item xs={6}>
-                        <img src={image} alt="gallery item"/>
-                    </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12}>
                         <Paper className="image-action-block">
                             {{
-                                crop: <Crop id={id} image={image} imageInfo={imageInfo}/>,
-                                blur: <Blur id={id} image={image} imageInfo={imageInfo}/>,
-                                resize: <Resize id={id} image={image} imageInfo={imageInfo}/>,
+                                crop: <Crop id={id} image={image} imageInfo={imageInfo} parameters={parameters} toggleInfo={toggleInfo}/>,
+                                blur: <Blur id={id} image={image} imageInfo={imageInfo} parameters={parameters} toggleInfo={toggleInfo}/>,
+                                resize: <Resize id={id} image={image} imageInfo={imageInfo} parameters={parameters} toggleInfo={toggleInfo}/>,
                             }[type]}
                         </Paper>
                     </Grid>
