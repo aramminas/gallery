@@ -1,8 +1,8 @@
 import React, {Fragment, useState} from "react";
-import {Link} from 'react-router-dom';
-import {Button, Container, Paper, Typography} from "@material-ui/core";
+import {Container, Paper, Typography} from "@material-ui/core";
 
 /* components */
+import LayoutWrapper from "./layout/LayoutWrapper";
 import LogsTable from "./LogsTable";
 import Card from "./Card";
 
@@ -16,11 +16,6 @@ const Logs = () => {
                 <Paper elevation={3} className="home-content">
                     <Typography variant="h5" gutterBottom component="div" className="logs-title">
                         <span>List of image changes</span>
-                        <Link to={`/`}>
-                            <Button variant="contained" color="primary">
-                                Home
-                            </Button>
-                        </Link>
                     </Typography>
                     <hr/>
                     { Object.keys(image).length > 0
@@ -43,4 +38,4 @@ const Logs = () => {
     );
 }
 
-export default Logs;
+export default LayoutWrapper(Logs);

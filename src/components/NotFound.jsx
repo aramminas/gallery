@@ -1,8 +1,11 @@
 import React, {useEffect} from "react";
 import {Link} from 'react-router-dom';
+import {useSelector} from "react-redux";
 import "../scss/main.css";
 
 const NotFound = () => {
+    const {isAuth} = useSelector(state => state.auth);
+
     useEffect(_ => {
         const body = document.querySelector('body');
         body.style.overflow = "hidden";
@@ -51,7 +54,7 @@ const NotFound = () => {
             <div className="sky-bg"/>
             <div className="wave-7"/>
             <div className="wave-6"/>
-            <Link to={`/`} className="wave-island">
+            <Link to={isAuth ? `/` : `/sign-in`} className="wave-island">
                 <img src="/images_404/island.svg" alt="Island"/>
             </Link>
             <div className="wave-5"/>

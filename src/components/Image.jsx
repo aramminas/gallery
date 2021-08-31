@@ -1,6 +1,6 @@
 import React , { useState, useEffect } from "react";
 import {Button, Container, Paper, ButtonGroup, Grid} from '@material-ui/core';
-import {useParams, Link} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {useDispatch, useSelector} from "react-redux";
 import { useToasts } from "react-toast-notifications";
 
@@ -9,6 +9,7 @@ import {getImageById} from "../store/actions/imagesAction";
 import {resetAllParameters} from "../store/actions/ongoingParametersAction";
 
 /* components */
+import LayoutWrapper from "./layout/LayoutWrapper";
 import Crop from "./Crop";
 import Blur from "./Blur";
 import Resize from "./Resize";
@@ -65,14 +66,6 @@ const Image = () => {
             <Paper elevation={3} className="image-content">
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Link to={`/`}>
-                            <Button variant="contained" color="primary">
-                                Home
-                            </Button>
-                        </Link>
-                        <hr/>
-                    </Grid>
-                    <Grid item xs={12}>
                         <div className="image-buttons">
                             <ButtonGroup aria-label="outlined primary button group">
                                 <Button color={(type === cropType) ? 'primary' : null} onClick={() => changeType(cropType)}>Crop</Button>
@@ -97,4 +90,4 @@ const Image = () => {
     );
 }
 
-export default Image;
+export default LayoutWrapper(Image);

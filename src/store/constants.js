@@ -18,3 +18,7 @@ export const CHANGE_OFFSET = 'CHANGE_OFFSET';
 /* Ongoing Parameters */
 export const SET_CURRENT_PARAMETERS = 'SET_CURRENT_PARAMETERS';
 export const RESET_ALL_PARAMETERS = 'RESET_ALL_PARAMETERS';
+
+/* Authorization */
+export const ADD_NEW_USER = 'ADD_NEW_USER';
+export const TOGGLE_AUTHORIZATION = 'TOGGLE_AUTHORIZATION';

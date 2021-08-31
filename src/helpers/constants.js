@@ -6,3 +6,5 @@ export const blurType = 'blur';
 export const cropType = 'crop';
 export const resizeType = 'resize';
 export const limitLogs = 10;
+export const accessTokenC = 'access_token';
+export const refreshTokenC = 'refresh_token';

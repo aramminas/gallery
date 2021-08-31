@@ -5,6 +5,7 @@ import { useToasts } from "react-toast-notifications";
 import {errorMessage} from "../helpers/helpers";
 
 /* components */
+import LayoutWrapper from "./layout/LayoutWrapper";
 import LoaderBlock from "./LoaderBlock";
 import ImagesTable from "./ImagesTable";
 import Modal from "./Modal";
@@ -61,4 +62,4 @@ const Home = () => {
     );
 }
 
-export default Home;
+export default LayoutWrapper(Home);

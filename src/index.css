@@ -12,8 +12,95 @@ code {
     monospace;
 }
 
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+.App {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+    min-height: 100vh;
+}
+
+.App #header {
+    flex: 0 1 auto;
+}
+
+.App #container {
+    flex: 1 1 auto;
+}
+
+.App #footer {
+    flex: 0 1 auto;
+}
+
+.site-header, .site-header .header-nav {
+    height: 100%;
+}
+
+.site-header .header-nav {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+#header, #footer {
+    background-color: #363636;
+    font-family: 'Open Sans', serif;
+    margin-bottom: 0;
+    font-weight: 600;
+    height: 76px;
+}
+
+#header .header-nav a {
+    color: #F5F7FA;
+    line-height: 40px;
+    text-transform: uppercase;
+    padding: 18px 0;
+    transition: all 0.3s;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 0 15px;
+}
+
+#header .header-nav a:hover {
+    /*color: #DA4453;*/
+    color: #446ada;
+    background-color: transparent;
+
+}
+
+.user-link {
+    display: flex;
+    align-items: center;
+}
+
+.user-link > * {
+    margin: 0 5px 0 0;
+}
+
+.footer-box {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F5F7FA;
+}
+
+.footer-box > * {
+    margin: 0 15px;
+}
+
+.footer-box a {
+    color: #F5F7FA;
+}
+
 .home-content, .image-content {
     margin-top: 100px;
+    margin-bottom: 15px;
     padding: 10px;
 }
 
@@ -56,7 +143,7 @@ button.save-image {
 }
 
 .image-action-block {
-    height: calc(100% - 20px);
+    /*height: calc(100% - 20px);*/
     padding: 10px;
 }
 
